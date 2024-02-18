@@ -22,7 +22,10 @@ export const cameraSlice = createSlice({
         resetCameraImg: (state) => {
             state.CameraImg = null
 
-        }
+        },
+
+        
+
         
     },
 
