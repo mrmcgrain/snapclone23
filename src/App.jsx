@@ -2,18 +2,33 @@ import React from 'react';
 // import logo from './logo.svg';
 // import { Counter } from './features/counter/Counter';
 import './App.css';
-import WebcamCapture from './features/WebcamCapture'
+import { Routes, Route } from 'react-router'
+import WebcamCapture from './WebcamCapture'
+// import { Preview } from '@mui/icons-material';
+import Preview from "./Preview"
+import Chats from "./Chats"
 
 
 
 function App() {
   return (
-    <div className="App">
-      <h1>Snaps</h1>
+    <div className="app">
+      {/* <h1>Snaps</h1> */}
+      <div className='app__body'>
 
-      <WebcamCapture />
+        <Routes>
+
+          <Route path="/" element={<WebcamCapture />} />
+          <Route path="/preview" element={<Preview />} />
+          <Route path="/chats" element={<Chats />} />
 
 
+
+        </Routes>
+        {/* <WebcamCapture /> */}
+
+
+      </div>
 
 
       {/* <header className="App-header">
