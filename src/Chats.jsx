@@ -3,13 +3,21 @@ import './Chats.css'
 import { Avatar } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import { db } from "./firebase"
+import { db, auth } from "./firebase"
 // import { PostAddSharp } from '@mui/icons-material';
 import Chat from "./Chat"
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from './features/appSlice';
+import { RadioButtonUnchecked } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { resetCameraImg } from './features/cameraSlice';
 
 function Chats() {
 
     const [posts, setPosts] = useState([])
+    const user = useSelector(selectUser)
+    const dispatch = useDispatch()
+    const nav = useNavigate()
 
     useEffect(() => {
         db.collection('posts')
@@ -24,17 +32,27 @@ function Chats() {
     }, [])
 
 
+    const takeSnap = () => {
+        dispatch(resetCameraImg())
+        nav("/")
+    }
+
     return (
 
         <div className='chats' >
 
             <div className="chats__header">
 
-                <Avatar className='chats__avatar' />
+                <Avatar src={user?.profilePic}
+                    onClick={() => {
+                        auth.signOut()
+                        nav("/")
+                    }}
+                    className='chats__avatar' />
 
                 <div className="chats__search">
 
-                    <SearchIcon className="" />
+                    <SearchIcon className="chats__searchIcon" />
 
                     <input placeholder='Friends' type='text' />
 
@@ -65,6 +83,11 @@ function Chats() {
                 )}
 
             </div>
+            <RadioButtonUnchecked
+                className='chats__takePicIcon'
+                onClick={takeSnap}
+                fontSize='large'
+            />
 
 
         </div>

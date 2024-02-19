@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import logo from './logo.svg';
 // import { Counter } from './features/counter/Counter';
 import './App.css';
@@ -9,37 +9,68 @@ import Preview from "./Preview"
 import Chats from "./Chats"
 import ChatView from "./ChatView"
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from './features/appSlice';
+import { selectUser, login, logout } from './features/appSlice';
 import Login from "./Login"
-
+import { auth } from "./firebase"
+// import snaplogo from "../public/snaplogo.png"
 
 function App() {
 
   const user = useSelector(selectUser)
   const dispatch = useDispatch()
 
+  useEffect(() => {
+
+    auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        dispatch(login({
+          username: authUser.displayName,
+          profilePic: authUser.photoURL,
+          id: authUser.uid
+        }))
+      } else {
+        dispatch(logout())
+
+      }
+    })
+
+  }, [])
+
   return (
     <div className="app">
       {/* <h1>Snaps</h1> */}
 
-      <Routes>
-        {!user ? (
-          <Route path="/login" element={<Login />} />
-        )
-          :
-          (
+      {!user ? (
+        <Login />
+        // <Route path="*" element={<Login />} />
+      )
+        :
+        (
+          // null
+          <>
+            <img className='app__logo' src={require("./snaplogo.png")} />
             <div className='app__body'>
-
-              <Route path="/" element={<WebcamCapture />} />
-              <Route path="/preview" element={<Preview />} />
-              <Route path="/chats" element={<Chats />} />
-              <Route path="/chats/view" element={<ChatView />} />
+              <div className="app_bodyBackground">
 
 
-              {/* <WebcamCapture /> */}
+                <Routes>
+                  <Route path="/" element={<WebcamCapture />} />
+
+
+
+                  <Route path="/preview" element={<Preview />} />
+                  <Route path="/chats" element={<Chats />} />
+                  <Route path="/chats/view" element={<ChatView />} />
+
+
+                  {/* <WebcamCapture /> */}
+
+                </Routes>
+              </div>
             </div>
-          )}
-      </Routes>
+
+          </>
+        )}
 
 
 
@@ -47,7 +78,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <Counter />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+        Edit <code>src/App.js</code> and save to reload.
         </p>
         <span>
           <span>Learn </span>

@@ -9,7 +9,29 @@
   height: 100vh;
 }
 
+.app__logo {
+object-fit: contain;
+height: 100px;
 
+}
+
+.app__body {
+  background-image: url( "https://www.pngkey.com/png/detail/859-8598072_picture-freeuse-library-silhouette-mobile-at-getdrawings-cell.png");
+
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 400px;
+  width: 250px;
+  /* padding: 74px; */
+}
+
+.app_bodyBackground {
+  background-color: white;
+  height: 400px;
+  
+}
 
 /* .App {
   text-align: center;

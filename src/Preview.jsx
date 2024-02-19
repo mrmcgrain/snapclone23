@@ -17,6 +17,7 @@ import SendIcon from '@mui/icons-material/Send'
 import { db, storage } from './firebase'
 import firebase from "firebase/compat/app";
 import 'firebase/compat/storage';
+import { selectUser } from './features/appSlice'
 
 // import { storage } from "./firebase.js"
 
@@ -25,7 +26,7 @@ function Preview() {
     let nav = useNavigate()
     const cameraImg = useSelector(selectCameraImg)
     const dispatch = useDispatch()
-
+    const user = useSelector(selectUser)
 
     useEffect(() => {
         if (!cameraImg) {
@@ -61,9 +62,9 @@ function Preview() {
                     .then((url) => {
                         db.collection('posts').add({
                             imageUrl: url,
-                            username: '23',
+                            username: user.username,
                             read: false,
-                            // profilePic,
+                            profilePic: user.profilePic,
                             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
 
 
@@ -84,7 +85,7 @@ function Preview() {
 
             <div className="preview">
                 <CloseIcon className='preview__close' onClick={closePreview} />
-
+                {console.log("user", user)}
                 <div className="preview__toolbarRight">
                     <TextFieldsIcon />
                     <CreateIcon />
